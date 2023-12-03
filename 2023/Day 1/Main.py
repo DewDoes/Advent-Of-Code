@@ -1,26 +1,5 @@
-import re
-
-def extract_calibration_values(input_text):
-    calibration_values = []
-    lines = input_text.split("\n")
-
-    for line in lines:
-        # Use regular expression to find the first and last digits in each line
-        match = re.search(r'\d', line)
-        
-        if match:
-            first_digit = match.group()
-            last_digit = line[::-1].find(match.group())
-            
-            if last_digit != -1:
-                last_digit = int(line[-(last_digit + 1)])
-                calibration_values.append(int(str(first_digit) + str(last_digit)))
-
-    return calibration_values
-
-# Replace 'your_input_text_here' with the actual puzzle input
-puzzle_input = """
-9dlvndqbddghpxc
+# Calibration document
+calibration_document = """9dlvndqbddghpxc
 rtkrbtthree8sixfoureight6
 fdxrqmfxdkstpmcj7lmphgsmqqnmjrtwo3tcbc
 onetjcsmgk57nvmkvcvkdtqtsksgpchsfsjzkkmb
@@ -1022,5 +1001,30 @@ foureightmppchbgz8lqbzqbjztwo7cksqxns
 zvhzgfpkhkone93nine
 """
 
-calibration_values = extract_calibration_values(puzzle_input)
-print(calibration_values)
+# Sum of calibration values
+total_sum_calibration = 0
+
+# Process calibration document
+for line in calibration_document.split('\n'):
+    first_digit = None
+
+    # Iterate over each character from the beginning
+    for char in line:
+        if char.isdigit():
+            first_digit = int(char)
+            break  # Stop when the first digit is found
+
+    last_digit = None
+
+    # Iterate over each character in reverse order
+    for char in reversed(line):
+        if char.isdigit():
+            last_digit = int(char)
+            break  # Stop when the last digit is found
+
+    # Combine the first and last digits into a two-digit number
+    if first_digit is not None and last_digit is not None:
+        combined_digits = first_digit * 10 + last_digit
+        total_sum_calibration += combined_digits
+
+print(total_sum_calibration)
